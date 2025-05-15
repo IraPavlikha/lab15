@@ -1,0 +1,28 @@
+#include <vcl.h>
+#pragma hdrstop
+
+#include "MainForm.h"
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+
+TForm1 *Form1;
+
+__fastcall TForm1::TForm1(TComponent* Owner)
+    : TForm(Owner)
+{
+}
+
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+    Label1->Caption = "Книги автора Іванова (2010-2017) знижка 10%";
+
+    // Припустимо непарний номер - використовуємо ADO + ODBC
+    DataModule1->ConnectADO();
+
+    DBGrid1->DataSource = DataModule1->DataSource1;
+}
+
+void __fastcall TForm1::BtnClearFilterClick(TObject *Sender)
+{
+    DataModule1->ADOQuery1->Filtered = false;
+}

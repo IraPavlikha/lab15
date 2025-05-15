@@ -1,0 +1,19 @@
+CREATE TABLE Books (
+    ID AUTOINCREMENT PRIMARY KEY,
+    Author TEXT(50),
+    Title TEXT(100),
+    Year INT,
+    Price CURRENCY
+);
+
+INSERT INTO Books (Author, Title, Year, Price) VALUES
+('Ivanov', 'Programming Basics', 2010, 150.00),
+('Ivanov', 'Advanced C++', 2015, 250.00),
+('Petrov', 'Database Systems', 2012, 180.00),
+('Ivanov', 'Data Structures', 2011, 200.00),
+('Sidorov', 'Networking Fundamentals', 2014, 220.00),
+('Ivanov', 'Algorithms', 2013, 210.00),
+('Petrov', 'Operating Systems', 2016, 230.00),
+('Sidorov', 'Software Engineering', 2015, 190.00),
+('Ivanov', 'Machine Learning', 2017, 300.00),
+('Petrov', 'Web Development', 2014, 170.00);

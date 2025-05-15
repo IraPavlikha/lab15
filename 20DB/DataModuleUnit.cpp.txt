@@ -1,0 +1,49 @@
+#include <vcl.h>
+#pragma hdrstop
+
+#include "DataModuleUnit.h"
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TDataModule1 *DataModule1;
+
+__fastcall TDataModule1::TDataModule1(TComponent* Owner)
+    : TDataModule(Owner)
+{
+}
+
+void TDataModule1::ConnectADO()
+{
+    // Підключення через ADO + ODBC alias (непарні номера)
+    ADOConnection1->ConnectionString = "Provider=MSDASQL.1;DSN=BookDB_ODBC;";
+    ADOConnection1->LoginPrompt = false;
+    ADOConnection1->Connected = true;
+
+    // SQL-запит вибору книг автора Иванова 2010-2017 року, сортування по назві
+    ADOQuery1->SQL->Clear();
+    ADOQuery1->SQL->Add("SELECT Author, Title, Year, Price, Price*0.9 AS DiscountPrice FROM Books");
+    ADOQuery1->SQL->Add("WHERE Author = :Author AND Year BETWEEN :YearStart AND :YearEnd");
+    ADOQuery1->SQL->Add("ORDER BY Title");
+    ADOQuery1->Parameters->ParamByName("Author")->Value = "Ivanov";
+    ADOQuery1->Parameters->ParamByName("YearStart")->Value = 2010;
+    ADOQuery1->Parameters->ParamByName("YearEnd")->Value = 2017;
+    ADOQuery1->Open();
+}
+
+void TDataModule1::ConnectBDE()
+{
+    // Підключення через BDE + ODBC link (парні номера)
+    Database1->AliasName = "ODBC;DSN=BookDB_ODBC";
+    Database1->LoginPrompt = false;
+    Database1->Connected = true;
+
+    Table1->DatabaseName = Database1->AliasName;
+    Table1->TableName = "Books";
+    Table1->Active = true;
+
+    Query1->DatabaseName = Database1->AliasName;
+    Query1->SQL->Text = "SELECT Author, Title, Year, Price FROM Books WHERE Author = :Author AND Year >= :YearStart AND Year <= :YearEnd ORDER BY Title";
+    Query1->ParamByName("Author")->AsString = "Ivanov";
+    Query1->ParamByName("YearStart")->AsInteger = 2010;
+    Query1->ParamByName("YearEnd")->AsInteger = 2017;
+    Query1->Open();
+}

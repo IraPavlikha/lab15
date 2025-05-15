@@ -1,0 +1,29 @@
+#ifndef DataModuleUnitH
+#define DataModuleUnitH
+#include <System.Classes.hpp>
+#include <Data.DB.hpp>
+#include <Data.Win.ADODB.hpp>
+#include <Db.hpp>
+#include <DBTables.hpp>    
+
+class TDataModule1 : public TDataModule
+{
+__published:
+    TADOConnection *ADOConnection1;
+    TADOQuery *ADOQuery1;
+    TDataSource *DataSource1;
+
+    TDatabase *Database1; 
+    TTable *Table1;
+    TQuery *Query1;
+    TDataSource *DataSource2;
+
+private:
+public:
+    __fastcall TDataModule1(TComponent* Owner);
+
+    void ConnectADO();
+    void ConnectBDE();
+};
+extern PACKAGE TDataModule1 *DataModule1;
+#endif

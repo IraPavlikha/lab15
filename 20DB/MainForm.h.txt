@@ -1,0 +1,29 @@
+#ifndef MainFormH
+#define MainFormH
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.Forms.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Grids.hpp>
+#include <Vcl.DBGrids.hpp>
+#include <Data.DB.hpp>
+
+#include "DataModuleUnit.h"
+
+class TForm1 : public TForm
+{
+__published:
+    TDBGrid *DBGrid1;
+    TButton *BtnClearFilter;
+    TLabel *Label1;
+
+    void __fastcall FormCreate(TObject *Sender);
+    void __fastcall BtnClearFilterClick(TObject *Sender);
+
+private:
+public:
+    __fastcall TForm1(TComponent* Owner);
+};
+
+extern PACKAGE TForm1 *Form1;
+#endif
