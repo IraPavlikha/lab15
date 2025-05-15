@@ -1,0 +1,80 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.StdCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls, Vcl.ExtCtrls,
+  Data.DB, DataModuleUnit;
+
+type
+  TForm1 = class(TForm)
+    DBGrid1: TDBGrid;
+    DBNavigator1: TDBNavigator;
+    DBLookupComboBox1: TDBLookupComboBox;
+    Image1: TImage;
+    Label1: TLabel;
+    ButtonClearFilter: TButton;
+
+    procedure FormCreate(Sender: TObject);
+    procedure DBLookupComboBox1CloseUp(Sender: TObject);
+    procedure ButtonClearFilterClick(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+  private
+    procedure LoadStudentPhoto(const Filename: string);
+  public
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  Label1.Caption := 'Павликха Ірина';
+  DataModule1.ConnectDB;
+
+  DBGrid1.DataSource := DataModule1.DataSourceStudents;
+  DBNavigator1.DataSource := DataModule1.DataSourceStudents;
+
+  DBLookupComboBox1.ListSource := DataModule1.DataSourceGroups;
+  DBLookupComboBox1.KeyField := 'id';
+  DBLookupComboBox1.ListField := 'group_name';
+
+  LoadStudentPhoto(DataModule1.ADOQueryStudents.FieldByName('photo_filename').AsString);
+end;
+
+procedure TForm1.DBLookupComboBox1CloseUp(Sender: TObject);
+begin
+  DataModule1.ADOQueryStudents.Filtered := False;
+  DataModule1.ADOQueryStudents.Filter :=
+    'group_id=' + DBLookupComboBox1.KeyValue;
+  DataModule1.ADOQueryStudents.Filtered := True;
+end;
+
+procedure TForm1.ButtonClearFilterClick(Sender: TObject);
+begin
+  DataModule1.ADOQueryStudents.Filtered := False;
+end;
+
+procedure TForm1.DBGrid1CellClick(Column: TColumn);
+var
+  filename: string;
+begin
+  filename := DataModule1.ADOQueryStudents.FieldByName('photo_filename').AsString;
+  LoadStudentPhoto(filename);
+end;
+
+procedure TForm1.LoadStudentPhoto(const Filename: string);
+begin
+  if FileExists(Filename) then
+    Image1.Picture.LoadFromFile(Filename)
+  else
+    Image1.Picture := nil;
+end;
+
+end.

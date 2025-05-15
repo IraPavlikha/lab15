@@ -1,0 +1,31 @@
+object Form1: TForm1
+  Caption = 'Список студентів'
+  OnCreate = FormCreate
+
+  object Label1: TLabel
+    Caption = 'Павліха Ірина'
+  end
+
+  object DBGrid1: TDBGrid
+    DataSource = DataModule1.DataSourceStudents
+  end
+
+  object DBNavigator1: TDBNavigator
+    DataSource = DataModule1.DataSourceStudents
+  end
+
+  object DBLookupComboBox1: TDBLookupComboBox
+    ListSource = DataModule1.DataSourceGroups
+    ListField = 'group_name'
+    KeyField = 'id'
+    OnCloseUp = DBLookupComboBox1CloseUp
+  end
+
+  object ButtonClearFilter: TButton
+    Caption = 'Очистити фільтр'
+    OnClick = ButtonClearFilterClick
+  end
+
+  object Image1: TImage
+  end
+end

@@ -1,0 +1,43 @@
+unit DataModuleUnit;
+
+interface
+
+uses
+  SysUtils, Classes, DB, ADODB;
+
+type
+  TDataModule1 = class(TDataModule)
+    ADOConnection1: TADOConnection;
+    ADOQueryStudents: TADOQuery;
+    ADOQueryGroups: TADOQuery;
+    DataSourceStudents: TDataSource;
+    DataSourceGroups: TDataSource;
+  public
+    procedure ConnectDB;
+  end;
+
+var
+  DataModule1: TDataModule1;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TDataModule1.ConnectDB;
+begin
+  ADOConnection1.ConnectionString := 'Provider=MSDASQL.1;' +
+    'Persist Security Info=False;' +
+    'Data Source=MySQL_DSN;';
+  ADOConnection1.LoginPrompt := False;
+  ADOConnection1.Connected := True;
+
+  ADOQueryGroups.SQL.Text := 'SELECT * FROM `Group`';
+  ADOQueryGroups.Open;
+
+  ADOQueryStudents.SQL.Text := 'SELECT * FROM Student';
+  ADOQueryStudents.Open;
+end;
+
+end.

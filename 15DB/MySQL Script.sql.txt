@@ -1,0 +1,24 @@
+CREATE DATABASE IF NOT EXISTS studentdb;
+USE studentdb;
+
+CREATE TABLE `Group` (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  group_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Student (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  surname VARCHAR(50) NOT NULL,
+  group_id INT,
+  record_book_number VARCHAR(20),
+  photo_filename VARCHAR(100),
+  FOREIGN KEY (group_id) REFERENCES `Group`(id)
+);
+
+-- Заповнення таблиць
+INSERT INTO `Group` (group_name) VALUES ('КН-41'), ('КН-42');
+
+INSERT INTO Student (surname, group_id, record_book_number, photo_filename)
+VALUES
+  ('Павліха', 1, '123456', 'pavlikha.jpg'),
+  ('Іваненко', 2, '654321', 'ivanenko.jpg');
